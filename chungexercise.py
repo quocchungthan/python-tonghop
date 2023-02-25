@@ -1,8 +1,18 @@
 #Load the dataset: The FER2013 dataset is available on Kaggle. Download the dataset and load it into your Python program. You can use Pandas, NumPy or any other library to read and manipulate the data.
 import utilities.io as cbtio
 import utilities.variables as cbtvar
-angryFaceTheFirst = cbtvar.Constants.TrainingSourcePath +  '/' + 'angry/Training_3908.jpg'
-cbtio.loadSingleImageByPath(angryFaceTheFirst)
+import utilities.presentation as cbtdisplay
+targets = ['angry', 'disgust', 'fear', 'happy', 'happy', 'neutral', 'sad', 'surprise']
+
+def mapInputsAndTarget(target):
+    folderName = cbtvar.Constants.TrainingSourcePath +  '/' + '' + target + '/'
+    inputs = cbtio.allFileNames(folderName)
+
+    return [[f, target] for f in inputs]
+dataSet = []
+for target in targets:
+    dataSet.extend(mapInputsAndTarget(target))
+cbtdisplay.asTable(dataSet, ['filename', 'target'])
 #Preprocess the data: The images in the dataset are in grayscale and have different sizes. You need to preprocess the data to resize the images to a standard size, convert them to RGB format, and normalize the pixel values.
 
 #Split the data: Split the dataset into training, validation, and test sets. You can use the train_test_split function from scikit-learn library to do this.
