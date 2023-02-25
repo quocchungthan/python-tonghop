@@ -2,17 +2,24 @@
 import utilities.io as cbtio
 import utilities.variables as cbtvar
 import utilities.presentation as cbtdisplay
-targets = ['angry', 'disgust', 'fear', 'happy', 'happy', 'neutral', 'sad', 'surprise']
+import utilities.transform as cbttrans
+targets = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
 
 def mapInputsAndTarget(target):
     folderName = cbtvar.Constants.TrainingSourcePath +  '/' + '' + target + '/'
     inputs = cbtio.allFileNames(folderName)
 
-    return [[f, target] for f in inputs]
+    return [[f, cbtio.loadSingleImageAsNumber(cbtvar.Constants.TrainingSourcePath + '/' + target + '/' + f), cbttrans.mapSoftMaxTargets(targets, target) ,target] for f in inputs]
+
+# Scripting
+
 dataSet = []
 for target in targets:
     dataSet.extend(mapInputsAndTarget(target))
-cbtdisplay.asTable(dataSet, ['filename', 'target'])
+dataSet = cbttrans.shuffle(dataSet)
+table = cbtdisplay.asTable(dataSet, ['filename', 'input', 'numericTarget' ,'target'])
+print(table)
+
 #Preprocess the data: The images in the dataset are in grayscale and have different sizes. You need to preprocess the data to resize the images to a standard size, convert them to RGB format, and normalize the pixel values.
 
 #Split the data: Split the dataset into training, validation, and test sets. You can use the train_test_split function from scikit-learn library to do this.

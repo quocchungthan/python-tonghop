@@ -9,4 +9,4 @@ def asTable(array, columns):
             data[c].append(record[index])
         index = index + 1
     df = pd.DataFrame(data)
-    print(df)
+    return df
