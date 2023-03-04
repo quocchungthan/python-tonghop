@@ -10,3 +10,12 @@ def shuffle(source):
     s(source)
 
     return source
+
+def reshapeForInput(X):
+    X = np.array(X)
+    print(X)
+    print(X.shape)
+    X = X.reshape(X.shape[0], 48, 48, 1)
+    X = X.astype('float32') / 255
+
+    return X

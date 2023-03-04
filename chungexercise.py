@@ -3,7 +3,9 @@ import utilities.io as cbtio
 import utilities.variables as cbtvar
 import utilities.presentation as cbtdisplay
 import utilities.transform as cbttrans
-targets = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
+import utilities.metadata as cbtmeta
+import utilities.ml as cbtml
+targets = cbtmeta.targets
 
 def mapInputsAndTarget(target):
     folderName = cbtvar.Constants.TrainingSourcePath +  '/' + '' + target + '/'
@@ -12,17 +14,17 @@ def mapInputsAndTarget(target):
     return [[f, cbtio.loadSingleImageAsNumber(cbtvar.Constants.TrainingSourcePath + '/' + target + '/' + f), cbttrans.mapSoftMaxTargets(targets, target) ,target] for f in inputs]
 
 # Scripting
-
 dataSet = []
 for target in targets:
     dataSet.extend(mapInputsAndTarget(target))
 dataSet = cbttrans.shuffle(dataSet)
 table = cbtdisplay.asTable(dataSet, ['filename', 'input', 'numericTarget' ,'target'])
+#table['input'] = cbttrans.reshapeForInput(table['input'])
 print(table)
 
-#Preprocess the data: The images in the dataset are in grayscale and have different sizes. You need to preprocess the data to resize the images to a standard size, convert them to RGB format, and normalize the pixel values.
+model = cbtml.initModel()
 
-#Split the data: Split the dataset into training, validation, and test sets. You can use the train_test_split function from scikit-learn library to do this.
+print(model)
 
 #Define the model architecture: You need to define the neural network architecture that will learn to recognize emotions from images. A common architecture for image classification is a convolutional neural network (CNN).
 
